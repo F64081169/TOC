@@ -1,9 +1,19 @@
+from os import name
 from transitions.extensions import GraphMachine
 
-from utils import send_address, send_book, send_contact, send_text_message,send_about, send_use, send_book,send_address,send_contact,send_fsm
+from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm
+from utils import send_lobby
 
 
 class TocMachine(GraphMachine):
+    RoomNum = 666 #房間號
+    Price = 1800 #價錢
+    name = "empty" #客人名
+    breakfast = "empty" #要吃早餐嗎
+    days = 0 #幾天
+    date = "empty" #住宿日期
+    state = "user"
+
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(model=self, **machine_configs)
     
@@ -36,11 +46,50 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return text.lower() == "show fsm"
 
+    def is_going_to_lobby(self, event):
+        text = event.message.text
+        return text.lower() == "查看小功能"
 
+    ###訂房流程
+    def is_going_to_name(self, event):
+        text = event.message.text
+        return True
+    def is_going_to_date(self, event):
+        text = event.message.text
+        return True
+    def is_going_to_day(self, event):
+        text = event.message.text
+        return True
+    def is_going_to_success(self, event):
+        text = event.message.text
+        return True
+
+    ###取消流程
+    def is_going_to_cancelYes(self, event):
+        text = event.message.text
+        return text.lower() == "Y"
+
+    def is_going_to_cancelNo(self, event):
+        text = event.message.text
+        return text.lower() == "N"
+
+
+
+    ### 主功能選單
+    def on_enter_lobby(self, event):
+        print("I'm entering lobby")
+        #TocMachine.state="lobby"
+        reply_token = event.reply_token
+        #send_text_message(reply_token, "呈現使用說明")
+        send_lobby(reply_token)
+        self.go_back()
+
+    def on_exit_lobby(self):
+        print("Leaving lobby")
     ### show fsm
     def on_enter_show_fsm(self, event):
         print("I'm entering show_fsm")
-
+        #TocMachine.state="show_fsm"
         reply_token = event.reply_token
         #send_text_message(reply_token, "呈現使用說明")
         send_fsm(reply_token)
@@ -52,6 +101,14 @@ class TocMachine(GraphMachine):
     ### 使用說明
     def on_enter_menu(self, event):
         print("I'm entering menu")
+        #TocMachine.state="menu"
+
+        # TocMachine.RoomNum = 0 #房間號
+        # TocMachine.Price = 0 #價錢
+        # TocMachine.name = "empty" #客人名
+        # TocMachine.breakfast = "empty" #要吃早餐嗎
+        # TocMachine.days = 0 #幾天
+        # TocMachine.date = "empty" #住宿日期
 
         reply_token = event.reply_token
         #send_text_message(reply_token, "呈現使用說明")
@@ -64,25 +121,106 @@ class TocMachine(GraphMachine):
     ### 房間預約
     def on_enter_room_booking(self, event):
         print("I'm entering room_booking")
-
+        TocMachine.state="room_booking"
         reply_token = event.reply_token
-        #send_text_message(reply_token, "呈現房間預約")
-        send_book(reply_token)
-        self.go_back()
+        send_text_message(reply_token, "開始訂房服務，請輸入名稱")
+        
 
-    def on_exit_room_booking(self):
-        print("Leaving room_booking")
+    ### 輸入名稱
+    def on_enter_name(self, event):
+        print("I'm entering name")
+        TocMachine.state="name"
+        name = event.message.text
+        if name !="@取消訂房":
+            TocMachine.name = name
+            reply_token = event.reply_token
+            send_text_message(reply_token, "你好哇! "+name+"! \n請輸入想要入住的日期\nex:2021/12/25")
+        else: 
+            pass
+            
+    ### 輸入日期
+    def on_enter_date(self, event):
+        print("I'm entering date")
+        TocMachine.state="date"
+        if event.message.text !="@取消訂房":
+            date = event.message.text
+            TocMachine.date = date
+            reply_token = event.reply_token
+            send_text_message(reply_token, "請輸入預計入住天數")
+        else:
+            pass
+
+    ### 輸入天數
+    def on_enter_day(self, event):
+        print("I'm entering date")
+        TocMachine.state="day"
+        day = event.message.text
+        if day !="@取消訂房":
+            TocMachine.days = int(day)
+            reply_token = event.reply_token
+            send_text_message(reply_token, "了解!"+TocMachine.name+"\n本大學...大飯店會免費提供早餐\n請問你是要西式還是中式呢？")
+            #self.go_back()
+        else:
+            pass
+
+    ### 訂房成功
+    def on_enter_success(self, event):
+        print("I'm entering date")
+        TocMachine.state="day"
+        breakfast = event.message.text
+        if breakfast !="@取消訂房":
+            TocMachine.breakfast = breakfast
+            reply_token = event.reply_token
+            send_text_message(reply_token, "訂房成功!房間號:666 價格:"+str(TocMachine.days*1800))
+            send_text_message(reply_token, "名稱:"+TocMachine.name+"\n日期:"+TocMachine.date+"\n天數:"+str(TocMachine.days)+"\n早餐:"+TocMachine.breakfast)
+            send_text_message(reply_token, "感謝您支持本大學店!")
+            self.go_back()
+        else:
+            pass
+
+
 
     ### 取消訂房
     def on_enter_cancel(self, event):
         print("I'm entering cancel")
+        #TocMachine.state="cancel"
+        reply_token = event.reply_token
+        send_text_message(reply_token, "確定要取消訂房嗎？(Y/N)")
+        
+    ### 確定取消訂房
+    def on_enter_cancelYes(self, event):
+        print("I'm entering cancel")
+        #TocMachine.state="cancelYes"
+        TocMachine.RoomNum = 0 #房間號
+        TocMachine.Price = 0 #價錢
+        TocMachine.name = "empty" #客人名
+        TocMachine.breakfast = "empty" #要吃早餐嗎
+        TocMachine.days = 0 #幾天
+        TocMachine.date = "empty" #住宿日期
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "呈現取消訂房")
+        send_text_message(reply_token, "取消成功!")
         self.go_back()
 
-    def on_exit_cancel(self):
-        print("Leaving cancel")
+    ### 不取消訂房
+    def on_enter_cancelNo(self, event):
+        print("I'm entering cancel")
+        #TocMachine.state="cancelNo"
+        reply_token = event.reply_token
+        send_text_message(reply_token, "哦嚇死我!")
+        send_text_message(reply_token, "幫你取消你的取消訂房")
+        #self.go_back()
+        if TocMachine.state=="name":
+            self.go_back_to_name()
+        elif TocMachine.state=="room_booking":
+            self.go_back_to_room_booking()
+        elif TocMachine.state=="date":
+            self.go_back_to_date()
+        elif TocMachine.state=="day":
+            self.go_back_to_day()
+        else:
+            self.go_back()
+    
 
     ### 關於我們
     def on_enter_about(self, event):

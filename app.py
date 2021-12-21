@@ -15,51 +15,34 @@ load_dotenv()
 
 
 machine = TocMachine(
-    states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm"],
+    states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm","lobby","name","date",
+    "day","cancelYes","cancelNo","success"],
     transitions=[
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "menu",
-            "conditions": "is_going_to_menu",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "room_booking",
-            "conditions": "is_going_to_room_booking",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "cancel",
-            "conditions": "is_going_to_cancel",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "about",
-            "conditions": "is_going_to_about",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "info",
-            "conditions": "is_going_to_info",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "comm",
-            "conditions": "is_going_to_comm",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "show_fsm",
-            "conditions": "is_going_to_show_fsm",
-        },
-        {"trigger": "go_back", "source": ["menu", "room_booking","cancel","about","info","comm","show_fsm"], "dest": "user"},
+        {"trigger": "advance","source": "user","dest": "menu","conditions": "is_going_to_menu",},
+        {"trigger": "advance","source": "user","dest": "room_booking","conditions": "is_going_to_room_booking",},
+        ###開始訂房流程
+        {"trigger": "advance","source": "room_booking","dest": "name","conditions": "is_going_to_name",},
+        {"trigger": "advance","source": "name","dest": "date","conditions": "is_going_to_date",},
+        {"trigger": "advance","source": "date","dest": "day","conditions": "is_going_to_day",},
+        {"trigger": "advance","source": "day","dest": "success","conditions": "is_going_to_success",},
+        ###取消訂房
+        {"trigger": "advance","source": ["user","room_booking","name","date","day"],"dest": "cancel","conditions": "is_going_to_cancel",},
+        {"trigger": "advance","source": "cancel","dest": "cancelYes","conditions": "is_going_to_cancelYes",},
+        {"trigger": "advance","source": "cancel","dest": "cancelNo","conditions": "is_going_to_cancelNo",},
+        ###其他rich menu
+        {"trigger": "advance","source": "user","dest": "about","conditions": "is_going_to_about",},
+        {"trigger": "advance","source": "user","dest": "info","conditions": "is_going_to_info",},
+        {"trigger": "advance","source": "user","dest": "comm","conditions": "is_going_to_comm",},
+        {"trigger": "advance","source": "user","dest": "show_fsm","conditions": "is_going_to_show_fsm",},
+        ###其他小功能
+        {"trigger": "advance","source": "user","dest": "lobby","conditions": "is_going_to_lobby",},
+        ###go back
+        {"trigger": "go_back", "source": ["success","menu", "room_booking","cancel","about","info","comm","show_fsm","lobby","name","date","day"], "dest": "user"},
+        ###取消訂房的go back
+        {"trigger": "go_back_to_room_booking", "source": "cancelNo", "dest": "room_booking"},
+        {"trigger": "go_back_to_name", "source": "cancelNo", "dest": "name"},
+        {"trigger": "go_back_to_date", "source": "cancelNo", "dest": "date"},
+        {"trigger": "go_back_to_day", "source": "cancelNo", "dest": "day"},
     ],
     initial="user",
     auto_transitions=False,
@@ -135,7 +118,7 @@ def webhook_handler():
         print(f"REQUEST BODY: \n{body}")
         response = machine.advance(event)
         if response == False:
-            send_text_message(event.reply_token, "Not Entering any State")
+            send_text_message(event.reply_token, "抱歉我看不懂QQ")
 
     return "OK"
 
