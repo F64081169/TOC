@@ -7,6 +7,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
+
 from fsm import TocMachine
 from utils import send_text_message
 
@@ -14,21 +15,51 @@ load_dotenv()
 
 
 machine = TocMachine(
-    states=["user", "state1", "state2"],
+    states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm"],
     transitions=[
         {
             "trigger": "advance",
             "source": "user",
-            "dest": "state1",
-            "conditions": "is_going_to_state1",
+            "dest": "menu",
+            "conditions": "is_going_to_menu",
         },
         {
             "trigger": "advance",
             "source": "user",
-            "dest": "state2",
-            "conditions": "is_going_to_state2",
+            "dest": "room_booking",
+            "conditions": "is_going_to_room_booking",
         },
-        {"trigger": "go_back", "source": ["state1", "state2"], "dest": "user"},
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "cancel",
+            "conditions": "is_going_to_cancel",
+        },
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "about",
+            "conditions": "is_going_to_about",
+        },
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "info",
+            "conditions": "is_going_to_info",
+        },
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "comm",
+            "conditions": "is_going_to_comm",
+        },
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "show_fsm",
+            "conditions": "is_going_to_show_fsm",
+        },
+        {"trigger": "go_back", "source": ["menu", "room_booking","cancel","about","info","comm","show_fsm"], "dest": "user"},
     ],
     initial="user",
     auto_transitions=False,
