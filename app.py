@@ -25,6 +25,7 @@ machine = TocMachine(
         {"trigger": "advance","source": "name","dest": "date","conditions": "is_going_to_date",},
         {"trigger": "advance","source": "date","dest": "day","conditions": "is_going_to_day",},
         {"trigger": "advance","source": "day","dest": "success","conditions": "is_going_to_success",},
+        {"trigger": "advance","source": "success","dest": "user",},
         ###取消訂房
         {"trigger": "go_cancel","source": ["user","room_booking","name","date","day"],"dest": "cancel",},
         {"trigger": "advance","source":"cancel","dest": "cancel2","conditions": "is_going_to_cancel2",},

@@ -1,10 +1,15 @@
 from os import name
 from typing import Text
 from transitions.extensions import GraphMachine
+import os
+
+from linebot import LineBotApi, WebhookParser
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction
 
 from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm
 from utils import send_lobby
 
+channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
 class TocMachine(GraphMachine):
     RoomNum = 666 #房間號
@@ -177,13 +182,30 @@ class TocMachine(GraphMachine):
         if breakfast !="@取消訂房":
             TocMachine.breakfast = breakfast
             reply_token = event.reply_token
-            send_text_message(reply_token, "訂房成功!房間號:666 價格:"+str(TocMachine.days*1800))
-            send_text_message(reply_token, "名稱:"+TocMachine.name+"\n日期:"+TocMachine.date+"\n天數:"+str(TocMachine.days)+"\n早餐:"+TocMachine.breakfast)
-            send_text_message(reply_token, "感謝您支持本大學店!")
+            line_bot_api = LineBotApi(channel_access_token)
+    
+            text1 ="訂房成功!房間號:666 價格:"+str(TocMachine.days*1800)
+            text2="名稱:"+TocMachine.name+"\n日期:"+TocMachine.date+"\n天數:"+str(TocMachine.days)+"\n早餐:"+TocMachine.breakfast
+            text3="感謝你支持本大學店"
+            message = [
+                TextSendMessage(
+                text = text1
+            ),
+            TextSendMessage(
+                text = text2
+            ),
+            TextSendMessage(
+                text = text3
+            ),
+            ]
+            line_bot_api.reply_message(reply_token,message)
             self.go_back()
         else:
             self.c=1
             self.go_cancel(event)
+
+    def on_exit_success(self):
+        print("Leaving success")
 
 
 

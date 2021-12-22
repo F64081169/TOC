@@ -46,8 +46,9 @@ def send_use(reply_token):
 3. 「位置資料」列出旅館地址，並會顯示地圖。
 4. 「聯絡我們」可直接撥打電話與我們聯繫。
 
-額外小功能 輸入「查看小功能」玩完其他互動
+輸入「查看功能」或按主頁面選單，完成全部互動
 輸入「show fsm」查看有限狀態機的圖片
+輸入「查詢訂房」查看你現在的訂房狀態
                '''
     message = TextSendMessage(
         text = text1
@@ -113,6 +114,7 @@ def send_lobby(reply_token):
         )
     line_bot_api.reply_message(reply_token, fsm)
     return "OK"
+
 
 """
 def send_image_url(id, img_url):
