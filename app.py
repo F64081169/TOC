@@ -16,7 +16,7 @@ load_dotenv()
 
 machine = TocMachine(
     states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm","lobby","name","date",
-    "day","cancelYes","cancelNo","success","cancel2"],
+    "day","success","cancel2"],
     transitions=[
         {"trigger": "advance","source": "user","dest": "menu","conditions": "is_going_to_menu",},
         {"trigger": "advance","source": "user","dest": "room_booking","conditions": "is_going_to_room_booking",},
@@ -29,10 +29,7 @@ machine = TocMachine(
         ###取消訂房
         {"trigger": "go_cancel","source": ["user","room_booking","name","date","day"],"dest": "cancel",},
         {"trigger": "advance","source":"cancel","dest": "cancel2","conditions": "is_going_to_cancel2",},
-        {"trigger": "advance","source":"cancelYes","dest": "user",},
-        
-        {"trigger": "go_cancelYes","source": "cancel2","dest": "cancelYes",},
-        {"trigger": "go_cancelNo","source": "cancel2","dest": "cancelNo",},
+        {"trigger": "advance","source": "cancel2","dest": "user",},
         ###其他rich menu
         {"trigger": "advance","source": "user","dest": "about","conditions": "is_going_to_about",},
         {"trigger": "advance","source": "user","dest": "info","conditions": "is_going_to_info",},
@@ -42,12 +39,8 @@ machine = TocMachine(
         {"trigger": "advance","source": "user","dest": "lobby","conditions": "is_going_to_lobby",},
         ###go back
         {"trigger": "go_back", "source": ["success","menu", "room_booking","cancel","about","info",
-        "comm","show_fsm","lobby","name","date","day","cancelYes","cancelNo"], "dest": "user"},
-        ###取消訂房的go back
-        {"trigger": "go_back_to_room_booking", "source": "cancelNo", "dest": "room_booking"},
-        {"trigger": "go_back_to_name", "source": "cancelNo", "dest": "name"},
-        {"trigger": "go_back_to_date", "source": "cancelNo", "dest": "date"},
-        {"trigger": "go_back_to_day", "source": "cancelNo", "dest": "day"},
+        "comm","show_fsm","lobby","name","date","day","cancel2"], "dest": "user"},
+        
     ],
     initial="user",
     auto_transitions=False,

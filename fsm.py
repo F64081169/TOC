@@ -4,10 +4,9 @@ from transitions.extensions import GraphMachine
 import os
 
 from linebot import LineBotApi, WebhookParser
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction,MessageTemplateAction
 
 from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm
-from utils import send_lobby
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
@@ -54,7 +53,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_lobby(self, event):
         text = event.message.text
-        return text.lower() == "查看小功能"
+        return text.lower() == "查看功能"
 
     ###訂房流程
     def is_going_to_name(self, event):
@@ -74,26 +73,20 @@ class TocMachine(GraphMachine):
     def is_going_to_cancel2(self, event):
         text = event.message.text
         return True
-    def is_going_to_cancelYes(self, event):
-        #text = event.message.text
-        return True
-
-    def is_going_to_cancelNo(self, event):
-        #text = event.message.text
-        return True
+    
 
 
 
     ### 主功能選單
     def on_enter_lobby(self, event):
         print("I'm entering lobby")
-        #TocMachine.state="lobby"
         reply_token = event.reply_token
-        send_lobby(reply_token)
+        send_fsm(reply_token)
         self.go_back()
 
     def on_exit_lobby(self):
         print("Leaving lobby")
+
     ### show fsm
     def on_enter_show_fsm(self, event):
         print("I'm entering show_fsm")
@@ -215,63 +208,25 @@ class TocMachine(GraphMachine):
         #TocMachine.state="cancel"
         reply_token = event.reply_token
         print(event.message.text)
-        send_text_message(reply_token, "確定要取消訂房嗎？(Y/N)")
+        send_text_message(reply_token, "隨意輸入來取消訂房")
         
 
     def on_enter_cancel2(self, event):
         print("I'm entering cancel2")
-        #TocMachine.state="cancel"
-        reply_token = event.reply_token
-        print(event.message.text)
-        send_text_message(reply_token, "確定要取消訂房嗎？(Y/N)")
-        if event.message.text=="Y" or event.message.text=="y":
-            self.go_cancelYes(event)
-            
-        elif event.message.text=="N" or event.message.text=="n":
-            self.go_cancelNo(event)
-           # send_text_message(reply_token, "哦嚇死我!\n幫你取消你的取消訂房")
-        else:
-            
-            self.go_cancel(event) 
-
-    ### 確定取消訂房
-    def on_enter_cancelYes(self, event):
-        print("I'm entering cancelYes")
-        #TocMachine.state="cancelYes"
         TocMachine.RoomNum = 0 #房間號
         TocMachine.Price = 0 #價錢
         TocMachine.name = "empty" #客人名
         TocMachine.breakfast = "empty" #要吃早餐嗎
         TocMachine.days = 0 #幾天
         TocMachine.date = "empty" #住宿日期
+        #TocMachine.state="cancel"
         reply_token = event.reply_token
-        print("取消成功")
-        #send_text_message(reply_token, "取消成功")
-        #reply_token = event.reply_token
+        print(event.message.text)
+        send_text_message(reply_token, "取消成功")
         self.go_back()
 
-    ### 不取消訂房
-    def on_enter_cancelNo(self, event):
-        print("I'm entering cancelNo")
-        #TocMachine.state="cancelNo"
-        #reply_token = event.reply_token
-        #reply_token = event.reply_token
-        #send_text_message(reply_token, "哦嚇死我!\n幫你取消你的取消訂房")
-        #self.go_back()
-    def on_exit_cancelNo(self):
-        print("Leaving cancelNo")
-        
-        if TocMachine.state=="name":
-            self.go_back_to_name()
-        elif TocMachine.state=="room_booking":
-            self.go_back_to_room_booking()
-        elif TocMachine.state=="date":
-            self.go_back_to_date()
-        elif TocMachine.state=="day":
-            self.go_back_to_day()
-        else:
-            self.go_back()
     
+        
 
     ### 關於我們
     def on_enter_about(self, event):

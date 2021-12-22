@@ -105,15 +105,6 @@ def send_fsm(reply_token):
     line_bot_api.reply_message(reply_token, fsm)
     return "OK"
 
-### lobby
-def send_lobby(reply_token):
-    line_bot_api = LineBotApi(channel_access_token)
-    fsm = ImageSendMessage(
-            original_content_url='https://i.imgur.com/UuxQIKx.png',
-            preview_image_url='https://i.imgur.com/UuxQIKx.png'
-        )
-    line_bot_api.reply_message(reply_token, fsm)
-    return "OK"
 
 
 """
