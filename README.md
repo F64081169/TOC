@@ -71,7 +71,7 @@ Or You can use [servo](http://serveo.net/) to expose local servers to the intern
 
 
 ## Finite State Machine
-![fsm](https://i.imgur.com/8EU4lGi.png)
+![fsm](https://i.imgur.com/UuxQIKx.png)
 
 ## Usage
 The initial state is set to `user`.
