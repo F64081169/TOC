@@ -16,14 +16,20 @@ def send_text_message(reply_token, text):
 def send_about(reply_token):
     line_bot_api = LineBotApi(channel_access_token)
     
-    text1 = "我們提供良好的環境及優質的住宿服務，使您有賓至如歸的感受，歡迎來體驗美好的經歷。"
+    text1 = '''
+    國立成功大學是一所積極新創、學科齊全、學術實力雄厚、辦學特色鮮明，
+    在國際上具有重要影響力與競爭力的綜合性大學，
+    在多個學術領域具有非常前瞻的科技實力，
+    擁有世界一流的實驗室與師資力量，
+    各種排名均位於全球前列。歡迎大家報考國立成功大學。
+    '''
     message = [
-        TextSendMessage(  #旅館簡介
+        TextSendMessage(  #學店簡介
             text = text1
         ),
-        ImageSendMessage(  #旅館圖片
-            original_content_url = "https://i.imgur.com/1NSDAvo.jpg",
-            preview_image_url = "https://i.imgur.com/1NSDAvo.jpg"
+        ImageSendMessage(  #學店圖片
+            original_content_url = "https://attach.setn.com/newsimages/2021/01/21/2994598-PH.jpg",
+            preview_image_url = "https://attach.setn.com/newsimages/2021/01/21/2994598-PH.jpg"
         ),
     ]
     line_bot_api.reply_message(reply_token,message)
@@ -36,11 +42,12 @@ def send_use(reply_token):
     
     text1 ='''
 1. 「房間預約」及「取消訂房」可預訂及取消訂房。每個 LINE 帳號只能進行一個預約記錄。
-2. 「關於我們」對旅館做簡單介紹及旅館圖片。
+2. 「關於我們」對國立成功大學做簡單介紹及旅館圖片。
 3. 「位置資料」列出旅館地址，並會顯示地圖。
 4. 「聯絡我們」可直接撥打電話與我們聯繫。
 
 額外小功能 輸入「查看小功能」玩完其他互動
+輸入「show fsm」查看有限狀態機的圖片
                '''
     message = TextSendMessage(
         text = text1
@@ -101,8 +108,8 @@ def send_fsm(reply_token):
 def send_lobby(reply_token):
     line_bot_api = LineBotApi(channel_access_token)
     fsm = ImageSendMessage(
-            original_content_url='https://i.imgur.com/8EU4lGi.png',
-            preview_image_url='https://i.imgur.com/8EU4lGi.png'
+            original_content_url='https://i.imgur.com/UuxQIKx.png',
+            preview_image_url='https://i.imgur.com/UuxQIKx.png'
         )
     line_bot_api.reply_message(reply_token, fsm)
     return "OK"
