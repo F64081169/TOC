@@ -6,7 +6,7 @@ import os
 from linebot import LineBotApi, WebhookParser
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction,MessageTemplateAction
 
-from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm
+from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm,send_breakfast
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
@@ -159,8 +159,9 @@ class TocMachine(GraphMachine):
         if day !="@取消訂房":
             TocMachine.days = int(day)
             reply_token = event.reply_token
-            send_text_message(reply_token, "了解!"+TocMachine.name+"\n本大學...大飯店會免費提供早餐\n請問你是要西式還是中式呢？")
+            #send_text_message(reply_token, "了解!"+TocMachine.name+"\n本大學...大飯店會免費提供早餐\n請問你是要西式還是中式呢？")
             #self.go_back()
+            send_breakfast(reply_token)
         else:
             self.c=1
             self.go_cancel(event)

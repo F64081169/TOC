@@ -1,7 +1,7 @@
 import os
 
 from linebot import LineBotApi, WebhookParser
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction,MessageTemplateAction
 
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
@@ -103,6 +103,30 @@ def send_fsm(reply_token):
             preview_image_url='https://i.imgur.com/UuxQIKx.png'
         )
     line_bot_api.reply_message(reply_token, fsm)
+    return "OK"
+
+### show breakfast
+def send_breakfast(reply_token):
+    line_bot_api = LineBotApi(channel_access_token)
+    
+    message = TemplateSendMessage(
+                            alt_text='Buttons template',
+                            template=ButtonsTemplate(
+                                title='最後一問!!!',
+                                text='飯店有提供早餐，請選擇早餐',
+                                actions=[
+                                    MessageTemplateAction(
+                                        label='中式',
+                                        text='中式'
+                                    ),
+                                    MessageTemplateAction(
+                                        label='西式',
+                                        text='西式'
+                                    ),
+                                ]
+                            )
+                        )
+    line_bot_api.reply_message(reply_token, message)
     return "OK"
 
 
