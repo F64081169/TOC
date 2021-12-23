@@ -16,7 +16,7 @@ load_dotenv()
 
 machine = TocMachine(
     states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm","lobby","name","date",
-    "day","success","cancel2"],
+    "day","success","cancel2","search"],
     transitions=[
         {"trigger": "advance","source": "user","dest": "menu","conditions": "is_going_to_menu",},
         {"trigger": "advance","source": "user","dest": "room_booking","conditions": "is_going_to_room_booking",},
@@ -27,9 +27,12 @@ machine = TocMachine(
         {"trigger": "advance","source": "day","dest": "success","conditions": "is_going_to_success",},
         {"trigger": "advance","source": "success","dest": "user",},
         ###取消訂房
-        {"trigger": "go_cancel","source": ["user","room_booking","name","date","day"],"dest": "cancel",},
+        {"trigger": "go_cancel","source": ["room_booking","name","date","day"],"dest": "cancel",},
+        {"trigger": "advance","source": "user","dest": "cancel","conditions": "is_going_to_cancel",},
         {"trigger": "advance","source":"cancel","dest": "cancel2","conditions": "is_going_to_cancel2",},
         {"trigger": "advance","source": "cancel2","dest": "user",},
+        ###查詢訂房
+        {"trigger": "advance","source": "user","dest": "search","conditions": "is_going_to_search",},
         ###其他rich menu
         {"trigger": "advance","source": "user","dest": "about","conditions": "is_going_to_about",},
         {"trigger": "advance","source": "user","dest": "info","conditions": "is_going_to_info",},
@@ -39,7 +42,7 @@ machine = TocMachine(
         {"trigger": "advance","source": "user","dest": "lobby","conditions": "is_going_to_lobby",},
         ###go back
         {"trigger": "go_back", "source": ["success","menu", "room_booking","cancel","about","info",
-        "comm","show_fsm","lobby","name","date","day","cancel2"], "dest": "user"},
+        "comm","show_fsm","lobby","name","date","day","cancel2","search"], "dest": "user"},
         
     ],
     initial="user",

@@ -46,7 +46,7 @@ def send_use(reply_token):
 3. 「位置資料」列出旅館地址，並會顯示地圖。
 4. 「聯絡我們」可直接撥打電話與我們聯繫。
 
-輸入「查看功能」或按主頁面選單，完成全部互動
+輸入「查看功能」即可完成show fsm ，查詢訂房的功能
 輸入「show fsm」查看有限狀態機的圖片
 輸入「查詢訂房」查看你現在的訂房狀態
                '''
@@ -122,6 +122,30 @@ def send_breakfast(reply_token):
                                     MessageTemplateAction(
                                         label='西式',
                                         text='西式'
+                                    ),
+                                ]
+                            )
+                        )
+    line_bot_api.reply_message(reply_token, message)
+    return "OK"
+
+### show lobby
+def send_lobby(reply_token):
+    line_bot_api = LineBotApi(channel_access_token)
+    
+    message = TemplateSendMessage(
+                            alt_text='Buttons template',
+                            template=ButtonsTemplate(
+                                title='其他功能',
+                                text='知識是光，善良是影',
+                                actions=[
+                                    MessageTemplateAction(
+                                        label='show fsm',
+                                        text='show fsm'
+                                    ),
+                                    MessageTemplateAction(
+                                        label='查詢訂房',
+                                        text='查詢訂房'
                                     ),
                                 ]
                             )

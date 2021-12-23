@@ -6,12 +6,12 @@ import os
 from linebot import LineBotApi, WebhookParser
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction,MessageTemplateAction
 
-from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm,send_breakfast
+from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm,send_breakfast,send_lobby
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
 class TocMachine(GraphMachine):
-    RoomNum = 666 #房間號
+    RoomNum = 0 #房間號
     Price = 1800 #價錢
     name = "empty" #客人名
     breakfast = "empty" #要吃早餐嗎
@@ -55,6 +55,11 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return text.lower() == "查看功能"
 
+    ###查詢訂房
+    def is_going_to_search(self, event):
+        text = event.message.text
+        return text.lower() == "查詢訂房"
+
     ###訂房流程
     def is_going_to_name(self, event):
         text = event.message.text
@@ -74,6 +79,37 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return True
     
+    ### 查詢訂房
+    def on_enter_search(self, event):
+        print("I'm entering search")
+        reply_token = event.reply_token
+        line_bot_api = LineBotApi(channel_access_token)
+        text1 ="你的訂房資料為:房間號:666 價格:"+str(TocMachine.days*1800)
+        text2="名稱:"+TocMachine.name+"\n日期:"+TocMachine.date+"\n天數:"+str(TocMachine.days)+"\n早餐:"+TocMachine.breakfast
+        text3="感謝你支持本大學店"
+        message1 = [
+            TextSendMessage(
+            text = text1
+        ),
+        TextSendMessage(
+            text = text2
+        ),
+        TextSendMessage(
+            text = text3
+        ),
+        ]
+        message2=TextSendMessage(
+            text = "抱歉查無資料!點按預約訂房開始預約房間!"
+        )
+        if TocMachine.name == "empty":
+            message = message2
+        else:
+            message = message1
+        line_bot_api.reply_message(reply_token,message)
+        self.go_back()
+
+    def on_exit_search(self):
+        print("Leaving search")
 
 
 
@@ -81,7 +117,8 @@ class TocMachine(GraphMachine):
     def on_enter_lobby(self, event):
         print("I'm entering lobby")
         reply_token = event.reply_token
-        send_fsm(reply_token)
+        
+        send_lobby(reply_token)
         self.go_back()
 
     def on_exit_lobby(self):
