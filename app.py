@@ -16,7 +16,7 @@ load_dotenv()
 
 machine = TocMachine(
     states=["user", "menu", "room_booking","cancel","about","info","comm","show_fsm","lobby","name","date",
-    "day","success","cancel2","search"],
+    "day","success","cancel2","search","request"],
     transitions=[
         {"trigger": "advance","source": "user","dest": "menu","conditions": "is_going_to_menu",},
         {"trigger": "advance","source": "user","dest": "room_booking","conditions": "is_going_to_room_booking",},
@@ -40,9 +40,10 @@ machine = TocMachine(
         {"trigger": "advance","source": "user","dest": "show_fsm","conditions": "is_going_to_show_fsm",},
         ###其他小功能
         {"trigger": "advance","source": "user","dest": "lobby","conditions": "is_going_to_lobby",},
+        {"trigger": "advance","source": "user","dest": "request","conditions": "is_going_to_request",},
         ###go back
         {"trigger": "go_back", "source": ["success","menu", "room_booking","cancel","about","info",
-        "comm","show_fsm","lobby","name","date","day","cancel2","search"], "dest": "user"},
+        "comm","show_fsm","lobby","name","date","day","cancel2","search","request"], "dest": "user"},
         
     ],
     initial="user",

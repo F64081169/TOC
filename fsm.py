@@ -7,7 +7,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, PostbackEvent, ImageSendMessage, LocationSendMessage, TemplateSendMessage, ButtonsTemplate, URITemplateAction, ConfirmTemplate, PostbackTemplateAction,MessageTemplateAction
 
 from utils import send_address, send_contact, send_text_message,send_about, send_use,send_address,send_contact,send_fsm,send_breakfast,send_lobby
-
+from emailtry import send_email_to_kanido
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
 class TocMachine(GraphMachine):
@@ -55,6 +55,10 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return text.lower() == "查看功能"
 
+    def is_going_to_request(self, event):
+        text = event.message.text
+        return text[:4] == "意見回饋" and text.count(' ') >= 2
+
     ###查詢訂房
     def is_going_to_search(self, event):
         text = event.message.text
@@ -78,7 +82,20 @@ class TocMachine(GraphMachine):
     def is_going_to_cancel2(self, event):
         text = event.message.text
         return True
-    
+    ###意見回饋
+    def on_enter_request(self, event):
+        print("I'm entering feature_request")
+
+        reply_token = event.reply_token
+        text = event.message.text
+        feature_name = text.split(' ')[1]#意見回饋 名稱 描述
+        description = ' '.join(text.split(' ')[2:])
+        send_email_to_kanido(reply_token, feature_name, description)
+        self.go_back()
+
+    def on_exit_request(self):
+        print("Leaving request")
+
     ### 查詢訂房
     def on_enter_search(self, event):
         print("I'm entering search")
