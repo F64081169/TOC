@@ -49,6 +49,8 @@ def send_use(reply_token):
 輸入「查看功能」即可完成show fsm ，查詢訂房的功能
 輸入「show fsm」查看有限狀態機的圖片
 輸入「查詢訂房」查看你現在的訂房狀態
+
+輸入「意見回饋 "主旨" "內容"」即可將你的意見打包成email寄給我喔喔!
                '''
     message = TextSendMessage(
         text = text1
