@@ -8,7 +8,7 @@
 於是某知名企業家預計投資一間旅館建於成功大學這人文薈萃的地方，接待各個從遠方慕名而來的大人物，那位知名企業家請我為他開發這個旅館預約系統。 
 目前的近況可以讓大家demo大致使用的流程。
 
-使用FSM machine 來實作Line Bot，以及使用SMTP來進行email信件的寄送。  
+技術：使用FSM machine 來實作Line Bot，以及使用SMTP來進行email信件的寄送，部署至heroku。  
 
 ## Usage
 ###  初始的state為`user`  
