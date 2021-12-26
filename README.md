@@ -1,4 +1,70 @@
-# TOC Project 2020
+# Booking System(2021 TOC Final Project)
+## Welcome to Booking System
+
+## Usage
+### * 初始的state為`user`  
+以下是歡迎訊息，有rich menu點按可以開始進行互動。  
+
+![](https://i.imgur.com/a0Bceli.jpg)  
+
+### * 按下rich menu的「關於我們」trigger `menu`  
+按下rich menu 的`關於我們`或輸入`@關於我們`可以查看Booking system的功能和詳細內容，上面的旋轉template也可以按按看進行其他互動。  
+
+![](https://i.imgur.com/wGZRBua.jpg)
+
+### * 按下rich menu的「使用說明」trigger `about`  
+按下rich menu 的`使用說明`或輸入`@使用說明`可以查看Booking system 的旅館資訊，包括成功大學良好的口碑和引以為傲的企業最愛排名。  
+
+![](https://i.imgur.com/1FXKUeR.jpg)
+
+### * 按下rich menu的「位置資訊」trigger `info`  
+按下rich menu 的`位置資訊`或輸入`@位置資訊`，Booking system會傳送給你國立成功大學的座標，點按開始進行導航。
+
+![](https://i.imgur.com/rEawhvx.jpg)
+
+### * 按下rich menu的「聯絡我們」trigger `comm`  
+按下rich menu 的`聯絡我們`或輸入`@聯絡我們`，Booking system會傳送給你聯絡電話，點按即可進行通話。  
+
+![](https://i.imgur.com/02nDRzo.jpg)
+
+### * 此圖為點擊`撥打電話`後，進行撥打電話的畫面  
+> 使用0123456789作為示範  
+
+![](https://i.imgur.com/bAbNhcH.jpg)
+
+### * 按下rich menu的「房間預約」trigger `room_booking`  
+按下rich menu 的`房間預約`或輸入`@房間預約`，開始進行訂房流程，  
+訂房流程依序需trigger：`name`,`data`,`day`,`breakfast`四個states，分別需要你輸入「姓名」、「日期」、「天數」、「早餐種類」，  來完成訂房，如果中途或完成訂房後後悔想取消預約，點按rich menu 的`取消訂房`，或輸入`@取消訂房`即可清空訂房資料，後面會進行示範。
+
+![](https://i.imgur.com/DnxUnED.jpg)
+
+(訂房成功會呈現你輸入過的訂房資訊)
+### * 輸入`查詢訂房`trigger `search`
+查詢你的訂房紀錄。
+### * 按下rich menu的「取消訂房」trigger `cancel`
+取消你的訂房紀錄，取消後想再查詢訂房紀錄會呈現查無訂房資料的相關訊息。
+
+![](https://i.imgur.com/YTj7IPG.jpg)
+
+### * 輸入`查看功能`trigger`lobby`
+輸入查看功能後可以點選`show fsm`和`查詢訂房`，來進行互動。
+1. show fsm: chat bot傳此次project的fsm picture。
+2. 查詢訂房:查詢你的訂房紀錄。
+
+
+![](https://i.imgur.com/cnWDBii.jpg)
+
+### * 輸入`意見回饋 「主旨」 「內容」`trigger `request`
+依照格式輸入`意見回饋` `主旨` `內容`即可將你的寶貴意見寄信給開發人員。（我本人@@）
+
+![](https://i.imgur.com/beYkI9q.jpg)
+
+### * 此圖為我收到的信件
+![](https://i.imgur.com/PkZ7m1G.jpg)
+
+
+## Finite State Machine
+![fsm](https://i.imgur.com/csunAds.png)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
 
@@ -70,20 +136,7 @@ python3 app.py
 Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
 
 
-## Finite State Machine
-![fsm](https://i.imgur.com/csunAds.png)
 
-## Usage
-The initial state is set to `user`.
-
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
-
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
 
 ## Deploy
 Setting to deploy webhooks on Heroku.
@@ -151,6 +204,13 @@ sudo snap install --classic heroku
 
 ## Reference
 [Pipenv](https://medium.com/@chihsuan/pipenv-更簡單-更快速的-python-套件管理工具-135a47e504f4) ❤️ [@chihsuan](https://github.com/chihsuan)
+
+[TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)
+
+Flask Architecture ❤️ [@Sirius207](https://github.com/Sirius207)
+
+[Line line-bot-sdk-python](https://github.com/line/line-bot-sdk-python/tree/master/examples/flask-echo)
+(https://github.com/chihsuan)
 
 [TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)
 
