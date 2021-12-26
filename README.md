@@ -1,5 +1,14 @@
 # Booking System(2021 TOC Final Project)
-## Welcome to Booking System
+## Welcome to Booking System 
+
+國立成功大學是一所積極新創、學科齊全、學術實力雄厚、辦學特色鮮明，在國際上具有重要影響力與競爭力的綜合性大學，在多個學術領域具有非常前瞻的科技實力，擁有世界一流的實驗室與師資力量，各種排名均位於全球前列。歡迎大家報考國立成功大學。  
+
+![15311797312967](https://user-images.githubusercontent.com/62001405/147402250-cb50cc76-ac8c-4247-a002-8f433479bb54.jpg)
+
+於是某知名企業家預計投資一間旅館建於成功大學這人文薈萃的地方，接待各個從遠方慕名而來的大人物，那位知名企業家請我為他開發這個旅館預約系統。 
+目前的近況可以讓大家demo大致使用的流程。
+
+使用FSM machine 來實作Line Bot，以及使用SMTP來進行email信件的寄送。  
 
 ## Usage
 ###  初始的state為`user`  
