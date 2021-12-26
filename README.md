@@ -7,13 +7,13 @@
 
 ![](https://i.imgur.com/a0Bceli.jpg)  
 
-### * 按下rich menu的「關於我們」trigger `menu`  
-按下rich menu 的`關於我們`或輸入`@關於我們`可以查看Booking system的功能和詳細內容，上面的旋轉template也可以按按看進行其他互動。  
+### * 按下rich menu的「使用說明」trigger `menu`  
+按下rich menu 的`使用說明`或輸入`@使用說明`可以查看Booking system 的旅館資訊，包括成功大學良好的口碑和引以為傲的企業最愛排名。  
 
 ![](https://i.imgur.com/wGZRBua.jpg)
 
-### * 按下rich menu的「使用說明」trigger `about`  
-按下rich menu 的`使用說明`或輸入`@使用說明`可以查看Booking system 的旅館資訊，包括成功大學良好的口碑和引以為傲的企業最愛排名。  
+### * 按下rich menu的「關於我們」trigger `about`  
+按下rich menu 的`關於我們`或輸入`@關於我們`可以查看Booking system的功能和詳細內容，上面的旋轉template也可以按按看進行其他互動。  
 
 ![](https://i.imgur.com/1FXKUeR.jpg)
 
